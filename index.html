@@ -1,0 +1,248 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="Logo.png" type="image/x-icon">
+    <title>Monthly Report Extractor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <section class="header">
+        <div>
+        <img src="Logo.png" alt="">
+        </div>
+        <div>
+        <h1>Annai Supermaket</h1>
+        </div>
+        </section>
+
+<section class="inputs">
+    <div class="excel-input">
+        <span><b> Upload the report here</b> </span>
+        <input type="file" id="input" accept=".xls,.xlsx,.ods">
+       </div>
+       <div class="excel-input" id="duration-box" style="display: none;">
+        <span id="duration">Work Duration</span>
+      
+       </div>
+    <div class="experience"> 
+        <div class="experience-each">
+        <div>
+            <span><b>Monthly Bonus for < 5 years experience :   </b>  Rs.</span>
+        </div>
+        <div>
+            <input id="bonus5" type="number" value="50" onchange="maketabler()">
+        </div>
+        </div>
+        <div class="experience-each">
+            <div>
+                <span><b> Monthly Bonus for 10+ years experience :  </b>  Rs.</span>
+            </div>
+            <div>
+                <input id="bonus10" type="number" value="100" onchange="maketabler()">
+            </div>
+        </div>
+    </div>
+<div> 
+<table>
+    <thead>
+        <tr>
+            <th>Employee Name</th>
+            <th style="width:60px;">Years of experience</th>
+            <th>Salary per hour</th>
+            <th>Work Hours</th>
+            <th>Salary Based work hours</th>
+            <th>Bonus</th>
+            <th>Total Salary</th>
+
+        </tr>
+    </thead>
+    <tbody id="tablevalues">
+    </tbody>
+</table>
+</div>
+</section>
+<script>
+         var results =[];
+         var names =[];
+function maketable(){
+    var rows ="";
+     names.forEach(name=>{
+        var file = results[name];
+        var hours = file.workhours;
+        var ihours = Math.abs(Math.round(hours))
+        var rawsalary = hours*25;
+        var rawisalary = Math.abs(Math.round(rawsalary));
+        var salary = Math.abs(Math.round(rawsalary+50));
+        if(ihours==0){
+            salary=0;
+        }
+        var row =
+        `<tr>
+            <td>`+file.name+`</td>
+            <td style="width:60px;"><input style="width:60px;height: 25px;" type="number" value="1"  onchange="maketabler()"></td>
+            <td >Rs. <input style="width:60px;height: 25px;" type="number" value="25" onchange="maketabler()"></td>
+            <td>`+ihours+` Hrs</td>
+            <td>Rs. `+rawisalary+`</td>
+            <td>Rs. 50</td>
+            <td>Rs. `+salary+`</td>
+        </tr>`;
+        rows +=row;
+        console.log(results[name])
+        document.getElementById("duration").innerHTML="<b>"+file.dates+"</b>";
+        document.getElementById("duration-box").style.display="flex"
+     })
+     document.getElementById("tablevalues").innerHTML=rows;
+     document.getElementById("tablevalues").outerHTML
+}
+
+function maketabler(){
+    var bonus5 =document.getElementById("bonus5").value;
+    var bonus10 =document.getElementById("bonus10").value;
+  var rows = document.querySelectorAll("tbody tr");
+  rows.forEach((row,l)=>{
+    console.log(row)
+    var exp = row.children[1].children[0].value;
+    var perhour = row.children[2].children[0].value;
+    var hours = row.children[3].textContent;
+    hours = hours.replace(" Hrs","");
+    hours = Number(hours)
+    var salary =row.children[4];
+    var bonus =row.children[5];
+    var tsalary =row.children[6];
+    if(exp<5){
+        var fbouns = bonus5*exp;
+    }
+    else{
+        var fbouns = bonus10*exp;
+    }
+    bonus.textContent="Rs. "+fbouns;
+    var fsalary = perhour*hours;
+    salary.textContent="Rs. "+fsalary;
+    var ftsalary = fsalary+fbouns;
+    tsalary.textContent="Rs. "+ftsalary
+    console.log(exp,perhour,hours,salary,bonus,tsalary,fbouns)
+  })
+  console.log(bonus5,bonus10,rows)
+}
+
+        document.getElementById('input').addEventListener('change', function(e) {
+   var file = e.target.files[0];
+   // input canceled, return
+   if (!file) return;
+   
+   var FR = new FileReader();
+   FR.onload = function(e) {
+     var data = new Uint8Array(e.target.result);
+     var workbook = XLSX.read(data, {type: 'array'});
+     console.log(workbook.SheetNames)
+     var sheets = workbook.SheetNames;
+
+     console.log(sheets)
+   sheets.forEach(element => {
+        var firstSheet = workbook.Sheets[element];
+     var emname ;
+     var emdates;
+     var ementries ;
+     // header: 1 instructs xlsx to create an 'array of arrays'
+     var rawresult = XLSX.utils.sheet_to_json(firstSheet, { header: 1 });
+     var result=[];
+     var timeresult=[];
+     rawresult.forEach((e,i)=>{
+if (i==1){
+emdates=  e;
+}
+else if(i==5){
+var emdetails = e[0].split(", ");
+//console.log(typeof(emdetails))
+var name = emdetails[0].replace("Employee Name : ","");
+name = name.replace(" ","");
+emname =name;;
+}
+else if(i>6){
+timeresult.push(e)
+}
+     })
+
+     var entries = [];
+     var eachentries = [];
+     timeresult.forEach((h,k)=>{
+if (eachentries==[]){
+    eachentries[0]=h[1];
+    if(h[3]=="Check In"){
+        eachentries[1]=h[2];
+    }
+    else if(h[3]=="Check Out"){ 
+      // console.log(eachentries)
+        eachentries[2]=h[2];
+        eachentries[1]="";
+      //  console.log(eachentries)
+        entries.push(eachentries);
+        eachentries=[];
+    }
+}
+else if(eachentries[0]==h[1]){
+    if(h[3]=="Check Out"){
+       
+        eachentries[2]=h[2];
+        entries.push(eachentries);
+        eachentries=[];
+    }
+}
+else if(eachentries[0]!==h[1]){
+    if(eachentries.length!==0){
+       // console.log(eachentries)
+    eachentries[2]="";
+    entries.push(eachentries);
+    }
+    eachentries=[];
+    eachentries[0]=h[1];
+    if(h[3]=="Check In"){
+        eachentries[1]=h[2];
+    }
+    else if(h[3]=="Check Out"){
+        //console.log(eachentries)
+        eachentries[1]="";
+        eachentries[2]=h[2];
+        entries.push(eachentries);
+        eachentries=[];
+    }
+}
+     })
+     console.log(entries.length)
+     console.log(timeresult.length)
+     var meworkhours = 0;
+     entries.forEach(entry=>{
+        if(entry[1]!==""&&entry[2]!==""){
+       var     dt1 = new Date("October 13, 2014 "+entry[1]+":00");
+var dt2 = new Date("October 13, 2014 "+entry[2]+":00");
+            var diff =(dt2.getTime() - dt1.getTime()) / 1000;
+            var mindiff = diff/60;
+            var hourdiff = mindiff/60;
+            entry[3]=hourdiff;
+
+           meworkhours = meworkhours+hourdiff;
+            //console.log(tmeworkhours)
+        }
+     })
+  ementries=entries;
+  //results.push()
+     //console.log(timeresult)
+   // console.log({name:emname,dates:emdates,entries:ementries})
+    //console.log(result)
+results[emname]={name:emname,dates:emdates,entries:ementries,workhours:meworkhours};
+names.push(emname)
+    // results.push(result);
+     });
+     maketable()
+     console.log(names)
+     
+   };
+   FR.readAsArrayBuffer(file);
+});
+
+
+    </script> 
+</body>
+</html>

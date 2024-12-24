@@ -1,0 +1,95 @@
+
+@import url( 'https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+body{
+    display: flex;
+    flex-direction: column;
+align-items: center;
+background: #eee;
+font-family: 'Inter';
+}
+.inputs{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.excel-input{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    border: 5px solid #e9700d;
+    padding: 20px;
+    border-radius: 15px;
+    width: 500px;
+    background-color: white;
+    margin-bottom: 40px;
+}
+table{
+    border-radius: 20px;
+    background-color: white;
+}
+table, th, td {
+    border-collapse: collapse;
+    padding: 1rem;
+    text-align: center;
+    border: 0.1px solid black;
+}
+th {
+    font-weight: bold;
+    border: 5px solid #e9700d;
+}
+td {
+    font-weight: lighter;
+    border: 5px solid #e9700d;
+}
+td input{
+    text-align: center;
+}
+.experience{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    align-items: center;
+    margin-top: -40px;
+}
+.experience-each{
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    border: 5px solid #e9700d;
+    padding: 20px;
+    border-radius: 15px;
+    width: 470px;
+    align-items: center;
+    justify-items: center;
+    gap: 10px;
+
+}
+.experience-each input{
+    text-align: center;
+    height: 40px;
+    font-size: 14px;
+    width: 100px;
+}
+.header{
+    height: 150px;
+    padding: 20px;
+    width: 100%;
+    background: #e9700d;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 50px;
+    gap: 100px;
+}
+.header img{
+    object-fit: contain;
+    height: 150px;
+    padding: 20px;
+}
+.header h1{
+    font-size: 42px;
+}
