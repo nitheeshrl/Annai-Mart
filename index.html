@@ -62,7 +62,7 @@
         </div>
         <div class="experience-each">
             <div>
-                <span><b> Monthly Bonus for 10+ years experience :  </b>  Rs.</span>
+                <span><b> Monthly Bonus for 5+ years experience :  </b>  Rs.</span>
             </div>
             <div>
                 <input id="bonus10" type="number" value="100" onchange="maketabler()">
@@ -126,9 +126,9 @@ function maketable(){
 function maketabler(){
     var bonus5 =document.getElementById("bonus5").value;
     var bonus10 =document.getElementById("bonus10").value;
-  var rows = document.querySelectorAll("tbody tr");
+  var rows = document.getElementById("tablevalues").querySelectorAll("tbody tr");
   rows.forEach((row,l)=>{
-    console.log(row)
+  //  console.log(row)
     var exp = row.children[1].children[0].value;
     var perhour = row.children[2].children[0].value;
     var hours = row.children[3].textContent;
