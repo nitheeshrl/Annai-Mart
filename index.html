@@ -142,6 +142,7 @@ function maketabler(){
     var salary =row.children[4];
     var bonus =row.children[5];
     var tsalary =row.children[6];
+
     if(exp<5){
         var fbouns = bonus5*exp;
     }
@@ -152,6 +153,9 @@ function maketabler(){
     var fsalary = perhour*hours;
     salary.textContent="Rs. "+Math.abs(Math.round(fsalary));
     var ftsalary = fsalary+fbouns;
+    if(hours==0){
+           ftsalary =0;
+        }
     tsalary.textContent="Rs. "+Math.abs(Math.round(ftsalary));
     //console.log(exp,perhour,hours,salary,bonus,tsalary,fbouns)
   })
