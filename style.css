@@ -6,6 +6,7 @@ body{
 align-items: center;
 background: #eee;
 font-family: 'Inter';
+z-index: 900;
 }
 .inputs{
     display: flex;
@@ -93,3 +94,74 @@ td input{
 .header h1{
     font-size: 42px;
 }
+.popup .overlay {
+    position: fixed;
+    top: 0px; 
+    left: 0px;
+
+    width: 100vw; 
+    height: 100vh;
+    background: rgba(0,0, 0, 0.7); 
+    z-index:600;
+display: none;
+    }
+.popup .content {
+    display: none;
+    positIon: fixed;
+    top: 50%;
+    left: 50%;
+    scale: 0;
+    transform: translate(-50%, -50%);
+    background:#fff;
+    max-width:90%;
+    width: auto;
+    height: auto;
+    max-height: 90%;
+    z-index:650;
+    text-align: center;
+    padding: 20px;
+    box-sizing: border-box;
+    border-radius: 40px;
+}
+
+.popup .close-btn {
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    width: 30px;
+    height: 30px;
+    background: #222;
+    color:#fff;
+    font-size: 25px;
+    font-weight: 600;
+    line-height: 30px; 
+    text-align: center; 
+    border-radius: 50%;
+}
+.popup.active .overlay { 
+    display:block;
+}
+.popup.active .content {
+    display: block;
+transition:all 300ms ease-in-out;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+scale: 1;
+overflow: scroll;
+
+}
+.popup.active .content::-webkit-scrollbar{
+display: none;
+}
+.details{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.details span{
+font-weight: bold;
+font-size: 24px;
+}   
