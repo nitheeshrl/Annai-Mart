@@ -98,7 +98,7 @@ function maketable(){
      names.forEach(name=>{
         var file = results[name];
         var hours = file.workhours;
-        var ihours = Math.abs(Math.round(hours))
+        var ihours = Math.round(hours * 100) / 100 
         var rawsalary = hours*25;
         var rawisalary = Math.abs(Math.round(rawsalary));
         var salary = Math.abs(Math.round(rawsalary+50));
@@ -138,7 +138,7 @@ function maketabler(){
    // hours = hours.replace(" Hrs","");
     hours = Number(hours)
     var fhours =row.children[3];
-    fhours.textContent = Math.abs(Math.round(hours))+" Hrs";
+    fhours.textContent = Math.round(hours * 100) / 100 +" Hrs";
     var salary =row.children[4];
     var bonus =row.children[5];
     var tsalary =row.children[6];
@@ -185,7 +185,7 @@ entries.forEach((row,d)=>{
                 <td>`+row[0]+`</td>
                 <td id="1"><input type="time" onchange="addtime(this)" value="`+row[1]+`"></td>
                 <td id="2"><input type="time" onchange="addtime(this)" value="`+row[2]+`"></td>
-                <td>`+Math.round(row[3] * 100) / 100+`</td>
+                <td>`+Math.round(row[3] * 100) / 100+" Hrs";+`</td>
                </tr>`;
                rows+=erow;
 })
